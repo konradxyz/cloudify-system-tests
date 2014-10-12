@@ -33,7 +33,8 @@ def main():
     handler = os.environ.get('CLOUDIFY_TEST_HANDLER_MODULE')
     if handler in [
         'cosmo_tester.framework.handlers.openstack',
-        'cosmo_tester.framework.handlers.simple_on_openstack']:
+        'cosmo_tester.framework.handlers.simple_on_openstack',
+        'cosmo_tester.framework.handlers.openstack_nova_net']:
         cloud_properties = openstack_properties
     elif handler == 'cosmo_tester.framework.handlers.ec2':
         cloud_properties = ec2_properties
