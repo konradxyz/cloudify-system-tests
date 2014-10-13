@@ -31,7 +31,7 @@
         "cloudify_test_handler_module": "cosmo_tester.framework.handlers.ec2"
     },
     {
-        "suite_name": "hp_openstack_nova_net_blueprints",
+        "suite_name": "openstack_nova_net_blueprints",
         "tests_to_run": "cosmo_tester/test_suites/test_blueprints_nova_net",
         "cloudify_test_config": "cloudify-config-openstack-nova-net.yaml",
         "cloudify_test_handler_module": "cosmo_tester.framework.handlers.openstack_nova_net"

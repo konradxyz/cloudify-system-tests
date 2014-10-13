@@ -16,18 +16,20 @@
 
 __author__ = 'boris'
 
-import requests
 import json
-from requests.exceptions import ConnectionError
+
+import requests
 
 from cosmo_tester.framework.testenv import TestCase
 from cosmo_tester.framework.util import YamlPatcher
 from cosmo_tester.framework.git_helper import clone
+import cosmo_tester.test_suites.test_blueprints.nodecellar_test as NodeApp
+
 
 NODECELLAR_URL = "https://github.com/cloudify-cosmo/" \
                  "cloudify-nodecellar-openstack.git"
 
-class NodecellarAppTest(TestCase):
+class NodecellarNovaNetAppTest(TestCase):
 
     def test_nodecellar(self):
 
@@ -41,7 +43,7 @@ class NodecellarAppTest(TestCase):
 
         self.execute_uninstall()
 
-        self.post_uninstall_assertions()
+        NodeApp.post_uninstall_assertions()
 
     def modify_blueprint(self):
         with YamlPatcher(self.blueprint_yaml) as patch:
@@ -148,16 +150,3 @@ class NodecellarAppTest(TestCase):
         except BaseException:
             self.fail('Response from wines page is not a valid JSON: {0}'
                       .format(wines_page_response.text))
-
-    def post_uninstall_assertions(self):
-        nodes_instances = self.client.node_instances.list(self.deployment_id)
-        print nodes_instances
-        self.assertFalse(any(node_ins for node_ins in nodes_instances if
-                             node_ins.state != 'deleted'))
-        try:
-            requests.get('http://{0}:8080'.format(self.public_ip))
-            self.fail('Expected a no route to host error to be raised when '
-                      'trying to retrieve the web page after uninstall, '
-                      'but no error was raised.')
-        except ConnectionError:
-            pass
