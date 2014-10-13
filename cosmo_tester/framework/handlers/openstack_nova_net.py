@@ -38,6 +38,7 @@ def openstack_clients(cloudify_config):
     creds = _client_creds(cloudify_config)
     return nvclient.Client(**creds)
 
+
 @retry(stop_max_attempt_number=5, wait_fixed=20000)
 def openstack_infra_state(cloudify_config):
     nova = openstack_clients(cloudify_config)
@@ -145,7 +146,6 @@ def _floatingips(nova, prefix):
     # return []
 
 
-
 def _check_prefix(name, prefix):
     return name.startswith(prefix)
 
@@ -169,7 +169,7 @@ class OpenstackNovaNetCleanupContext(BaseHandler.CleanupContext):
 
     def __init__(self, context_name, cloudify_config):
         super(OpenstackNovaNetCleanupContext, self).__init__(context_name,
-                                                      cloudify_config)
+                                                             cloudify_config)
         self.before_run = openstack_infra_state(cloudify_config)
 
     def cleanup(self):
@@ -197,7 +197,8 @@ class OpenstackNovaNetCleanupContext(BaseHandler.CleanupContext):
 class CloudifyOpenstackNovaNetConfigReader(BaseHandler.CloudifyConfigReader):
 
     def __init__(self, cloudify_config):
-        super(CloudifyOpenstackNovaNetConfigReader, self).__init__(cloudify_config)
+        super(CloudifyOpenstackNovaNetConfigReader, self).\
+            __init__(cloudify_config)
 
     @property
     def region(self):

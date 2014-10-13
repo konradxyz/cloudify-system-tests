@@ -29,11 +29,13 @@ import cosmo_tester.test_suites.test_blueprints.nodecellar_test as NodeApp
 NODECELLAR_URL = "https://github.com/cloudify-cosmo/" \
                  "cloudify-nodecellar-openstack.git"
 
+
 class NodecellarNovaNetAppTest(TestCase):
 
     def test_nodecellar(self):
 
-        self.repo_dir = clone(NODECELLAR_URL, self.workdir, branch="CFY-999-Nova-Net")
+        self.repo_dir = clone(NODECELLAR_URL, self.workdir,
+                              branch="CFY-999-Nova-Net")
         self.blueprint_yaml = self.repo_dir / 'blueprint_nova_net.yaml'
         self.modify_blueprint()
 
