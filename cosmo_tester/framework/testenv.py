@@ -255,7 +255,7 @@ class TestEnvironment(object):
                         self.management_key_path),
                     disable_known_hosts=True):
                 fabric_api.run('sudo apt-get update')
-                fabric_api.run('sudo apt-get install -f')
+                fabric_api.run('sudo apt-get install -f -y')
                 fabric_api.run('sudo apt-get install atop')
                 fabric_api.run('sudo apt-get install dtach')
                 atop_cmd = 'sudo atop -w /tmp/atop.raw -i 1 100000000'
