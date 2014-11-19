@@ -245,7 +245,7 @@ class TestEnvironment(object):
         self._management_running = True
 
         try:
-            self.logger.info('Starting atop on Cloudify manager...')
+            logger.info('Starting atop on Cloudify manager...')
             output = StringIO()
             with fabric_api.settings(
                     user=self.management_user_name,
@@ -263,7 +263,7 @@ class TestEnvironment(object):
                     'dtach -n `mktemp -u /tmp/XXXX` {0}'.format(atop_cmd),
                     stdout=output)
         except Exception as e:
-            self.logger.info(
+            logger.info(
                 'Error running ps aux on Cloudify manager: {0}'.format(
                     str(e)))
 
