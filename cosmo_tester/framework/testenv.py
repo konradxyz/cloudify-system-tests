@@ -197,6 +197,25 @@ class TestEnvironment(object):
         if self._global_cleanup_context is None:
             return
         self.setup()
+
+        if self.management_ip:
+            atop_file = '/tmp/atop.raw'
+            from fabric.contrib import files
+            if files.exists(atop_file):
+                bucket_url = 'http://upload-test-cloudify.s3-eu-west-1.amazonaws.com/atop.raw'  # NOQA
+                logger.info(
+                    'Uploading {0} to {1}'.format(atop_file, bucket_url))
+                curl_cmd = 'curl --upload-file {0} {1}'.format(atop_file,
+                                                               bucket_url)
+                try:
+                    fabric_api.run(curl_cmd)
+                except Exception, e:
+                    logger.info(
+                        'Error uploading {0} to S3 -> {1}'.format(atop_file,
+                                                                  str(e)))
+            else:
+                logger.info('{0} not found'.format(atop_file))
+
         cfy = CfyHelper(cfy_workdir=self._workdir)
         try:
             cfy.use(self.management_ip, provider=self.is_provider_bootstrap)
@@ -224,6 +243,29 @@ class TestEnvironment(object):
             raise RuntimeError('Manager at {0} is not running.'
                                .format(self.management_ip))
         self._management_running = True
+
+        try:
+            self.logger.info('Starting atop on Cloudify manager...')
+            output = StringIO()
+            with fabric_api.settings(
+                    user=self.management_user_name,
+                    host_string=management_ip,
+                    key_filename=get_actual_keypath(
+                        self,
+                        self.management_key_path),
+                    disable_known_hosts=True):
+                fabric_api.run('sudo apt-get update')
+                fabric_api.run('sudo apt-get install -f')
+                fabric_api.run('sudo apt-get install atop')
+                fabric_api.run('sudo apt-get install dtach')
+                atop_cmd = 'sudo atop -w /tmp/atop.raw -i 1 100000000'
+                fabric_api.run(
+                    'dtach -n `mktemp -u /tmp/XXXX` {0}'.format(atop_cmd),
+                    stdout=output)
+        except Exception as e:
+            self.logger.info(
+                'Error running ps aux on Cloudify manager: {0}'.format(
+                    str(e)))
 
     # Will return provider specific handler/config properties if not found in
     # test env.
