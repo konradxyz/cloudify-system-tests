@@ -199,22 +199,34 @@ class TestEnvironment(object):
         self.setup()
 
         if self.management_ip:
-            atop_file = '/tmp/atop.raw'
-            from fabric.contrib import files
-            if files.exists(atop_file):
-                bucket_url = 'http://upload-test-cloudify.s3-eu-west-1.amazonaws.com/atop.raw'  # NOQA
-                logger.info(
-                    'Uploading {0} to {1}'.format(atop_file, bucket_url))
-                curl_cmd = 'curl --upload-file {0} {1}'.format(atop_file,
-                                                               bucket_url)
-                try:
-                    fabric_api.run(curl_cmd)
-                except Exception, e:
-                    logger.info(
-                        'Error uploading {0} to S3 -> {1}'.format(atop_file,
-                                                                  str(e)))
-            else:
-                logger.info('{0} not found'.format(atop_file))
+            try:
+                atop_file = '/tmp/atop.raw'
+                with fabric_api.settings(
+                        user=self.management_user_name,
+                        host_string=self.management_ip,
+                        key_filename=get_actual_keypath(
+                            self,
+                            self.management_key_path),
+                        disable_known_hosts=True):
+                    from fabric.contrib import files
+                    if files.exists(atop_file):
+                        bucket_url = 'http://upload-test-cloudify.s3-eu-west-1.amazonaws.com/atop.raw'  # NOQA
+                        logger.info(
+                            'Uploading {0} to {1}'.format(atop_file,
+                                                          bucket_url))
+                        curl_cmd = 'curl --upload-file {0} {1}'.format(
+                            atop_file, bucket_url)
+                        try:
+                            fabric_api.run(curl_cmd)
+                        except Exception, e:
+                            logger.info(
+                                'Error uploading {0} to S3 -> {1}'.format(
+                                    atop_file, str(e)))
+                    else:
+                        logger.info('{0} not found'.format(atop_file))
+            except Exception, e:
+                logger.error(
+                    'Error uploading atop file to S3: {0}'.format(str(e)))
 
         cfy = CfyHelper(cfy_workdir=self._workdir)
         try:
