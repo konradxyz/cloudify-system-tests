@@ -2,7 +2,6 @@ tosca_definitions_version: cloudify_dsl_1_0
 
 imports:
     - http://www.getcloudify.org/spec/cloudify/3.2m4/types.yaml
-    - http://www.getcloudify.org/spec/openstack-plugin/1.2m4/plugin.yaml
 
 plugins:
   windows_host_plugin:
@@ -12,20 +11,27 @@ plugins:
 node_templates:
 
   vm:
-    type: cloudify.openstack.nodes.WindowsServer
+    type: cloudify.nodes.Compute
     properties:
-      server:
-        name: windows-agent-vm
-        image_name: MODIFIED_BY_TEST
-        flavor: 102
+      ip:
       cloudify_agent:
          service:
            successful_consecutive_status_queries_count: 10
            status_transition_sleep_interval: 5
            start_timeout: 240
            stop_timeout: 240
-         user: Administrator
-         password: 1408Rokk
+         user: Admin
+         password:
+    interfaces:
+      cloudify.interfaces.worker_installer:
+        install: windows_agent_installer.windows_agent_installer.tasks.install
+        start: windows_agent_installer.windows_agent_installer.tasks.start
+        stop: windows_agent_installer.windows_agent_installer.tasks.stop
+        uninstall: windows_agent_installer.windows_agent_installer.tasks.uninstall
+        restart: windows_agent_installer.windows_agent_installer.tasks.restart
+      cloudify.interfaces.plugin_installer:
+        install: windows_plugin_installer.windows_plugin_installer.tasks.install
+
 
   app1:
     type: cloudify.nodes.ApplicationModule

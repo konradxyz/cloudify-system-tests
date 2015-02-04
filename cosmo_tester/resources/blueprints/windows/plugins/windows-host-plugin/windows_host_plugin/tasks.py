@@ -18,6 +18,6 @@ from cloudify import ctx
 
 
 @operation
-def task(**kwargs):
+def create1(**kwargs):
     ctx.logger.info('Executing task {0}'.format(ctx.task_name))
-    ctx.instance.runtime_properties[ctx.task_name] = True
+    ctx.instance.runtime_properties['create1_key'] = 'create1_value'

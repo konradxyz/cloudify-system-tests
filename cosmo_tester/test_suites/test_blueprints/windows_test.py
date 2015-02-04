@@ -32,5 +32,11 @@ class WindowsAgentTest(TestCase):
             patch.set_value('node_templates.vm.properties.server.image_name',
                             self.env.windows_image_name)
 
+        self.blueprint_yaml = blueprint_path / 'existing-blueprint.yaml'
         self.upload_deploy_and_execute_install()
+        outputs = self.client.deployments.outputs.get(self.test_id)['outputs']
+        self.assertEqual('create1_value', outputs['create1_key'])
+        self.assertEqual('configure1_value', outputs['configure1_key'])
+        self.assertEqual('start1_value', outputs['start1_key'])
+        self.assertEqual('create2_value', outputs['create2_key'])
         self.execute_uninstall()
