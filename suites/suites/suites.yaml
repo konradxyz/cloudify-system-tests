@@ -87,7 +87,7 @@ templates:
 
   - &docker_manager_blueprint_override
     <<: *manager_blueprint_override
-    node_templates.manager.properties.cloudify_packages.docker.docker_url: '{{docker_image_url}}'
+    node_templates.manager.properties.cloudify_packages.docker.docker_url: 'http://s3.amazonaws.com/adaml_docker/cloudify_all.tar'
 
   - &dockerless_manager_blueprint_override
     <<: *manager_blueprint_override
