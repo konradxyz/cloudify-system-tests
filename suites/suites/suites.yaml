@@ -23,7 +23,7 @@ variables:
   ######################################################
 
   # These values are updated by the version tool
-  core_branch: '3.2m6'
+  core_branch: '3.2m5'
   plugins_branch: '1.2m5'
   cli_branch: 'CFY-1838-split-container-support'
 
