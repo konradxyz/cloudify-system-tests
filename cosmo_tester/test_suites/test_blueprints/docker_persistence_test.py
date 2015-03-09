@@ -72,9 +72,10 @@ class DockerPersistenceTest(nodecellar_test.NodecellarAppTest):
         })
 
     def restart_container(self):
-        self.logger.info('terminating cloudify nginx container')
-        fabric.api.run('sudo docker exec -d frontend /bin/bash -c \'pkill -f '
-                       'nginx\' ')
+        # self.logger.info('terminating cloudify nginx container')
+        # fabric.api.run('sudo docker exec -d frontend /bin/bash -c 'pkill -f '
+        #                'nginx' ')
+        fabric.api.run('sudo reboot')
         started = self._wait_for_management(self.env.management_ip, 180)
         return started
 
