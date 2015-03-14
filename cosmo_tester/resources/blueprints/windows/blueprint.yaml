@@ -1,8 +1,8 @@
-tosca_definitions_version: cloudify_dsl_1_0
+tosca_definitions_version: cloudify_dsl_1_1
 
 imports:
-    - http://www.getcloudify.org/spec/cloudify/3.2m6/types.yaml
-    - http://www.getcloudify.org/spec/openstack-plugin/1.2m6/plugin.yaml
+    - http://www.getcloudify.org/spec/cloudify/3.2m7/types.yaml
+    - http://www.getcloudify.org/spec/openstack-plugin/1.2m7/plugin.yaml
 
 plugins:
   windows_host_plugin:
@@ -19,10 +19,10 @@ node_templates:
   vm:
     type: cloudify.openstack.nodes.WindowsServer
     properties:
+      image: MODIFIED_BY_TEST
+      flavor: MODIFIED_BY_TEST
       server:
         name: windows-agent-vm
-        image: MODIFIED_BY_TEST
-        flavor: MODIFIED_BY_TEST
         userdata: |
           #ps1_sysnative
           winrm quickconfig -q
@@ -50,6 +50,7 @@ node_templates:
         start:
           inputs:
             cloudify_agent: *CLOUDIFY_AGENT
+          max_retries: 35
         stop:
           inputs:
             cloudify_agent: *CLOUDIFY_AGENT

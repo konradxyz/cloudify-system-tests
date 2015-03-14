@@ -27,7 +27,7 @@ class TwoDeploymentsTest(TestCase):
 
     def test_two_deployments(self):
         repo_dir = clone(bash.CLOUDIFY_HELLO_WORLD_EXAMPLE_URL, self.workdir)
-        self.blueprint_path = repo_dir / 'hello-world'
+        self.blueprint_path = repo_dir
         self.blueprint_yaml = self.blueprint_path / 'blueprint.yaml'
 
         count = 2
@@ -86,7 +86,7 @@ class TwoDeploymentsTest(TestCase):
                 '{0}.cloudify_agent'.format(vm_properties_path), {
                     'user': self.env.cloudify_agent_user,
                 })
-            patch.merge_obj('{0}.server'.format(vm_properties_path), {
+            patch.merge_obj('{0}'.format(vm_properties_path), {
                 'image': self.env.ubuntu_image_name,
                 'flavor': self.env.flavor_name,
             })
