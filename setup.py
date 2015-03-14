@@ -32,7 +32,7 @@ setup(
         'path.py==5.1',
         'nose',
         'retrying==1.2.2',
-        'cloudify==CFY-1838-split-container-support',
+        'cloudify==3.2a6',
         'elasticsearch',
         'Jinja2==2.7.2',
         'influxdb==0.1.13'
