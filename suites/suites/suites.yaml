@@ -23,8 +23,8 @@ variables:
   ######################################################
 
   # These values are updated by the version tool
-  core_branch: '3.2m5'
-  plugins_branch: '1.2m5'
+  core_branch: 'master'
+  plugins_branch: 'master'
   cli_branch: 'CFY-1838-split-container-support'
 
   # These values are injected by quickbuild and are here mainly
@@ -82,12 +82,12 @@ templates:
     node_templates.manager.properties.cloudify_packages.agents.ubuntu_agent_url: '{{ubuntu_package_agent_url}}'
     node_templates.manager.properties.cloudify_packages.agents.centos_agent_url: '{{centos_package_agent_url}}'
     node_templates.manager.properties.cloudify_packages.agents.windows_agent_url: '{{windows_package_agent_url}}'
-    node_templates.manager.properties.cloudify_packages.agents.debian_agent_url: 'https://dl.dropboxusercontent.com/u/407576/cloudify-debian-jessie-agent_3.1.0_amd64.deb'
+    node_templates.manager.properties.cloudify_packages.agents.debian_agent_url: 'http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.2.0/m7-RELEASE/cloudify-debian-jessie-agent_3.2.0-m7-b177_amd64.deb'
     node_templates.manager.properties.cloudify.workflows.task_retries: 20
 
   - &docker_manager_blueprint_override
     <<: *manager_blueprint_override
-    node_templates.manager.properties.cloudify_packages.docker.docker_url: 'http://s3.amazonaws.com/adaml_docker/cloudify_3.2m5.tar'
+    node_templates.manager.properties.cloudify_packages.docker.docker_url: 'http://s3.amazonaws.com/adaml_docker/cloudify_3.2m7_6.tar'
 
   - &dockerless_manager_blueprint_override
     <<: *manager_blueprint_override
