@@ -22,6 +22,7 @@ import json
 from time import sleep, time
 
 import fabric.api
+import difflib
 
 from cosmo_tester.framework.util import YamlPatcher
 from cosmo_tester.test_suites.test_blueprints import nodecellar_test
@@ -35,6 +36,10 @@ class DockerPersistenceTest(nodecellar_test.NodecellarAppTest):
         restarted = self.restart_container()
         if not restarted:
             raise AssertionError('Failed restarting container. Test failed.')
+        print 'initial provider context is: {}'\
+              .format(json.load(provider_context))
+        print 'after reboot provider context is: {}' \
+              .format(json.load(self.get_provider_context()))
         self.assertEqual(json.load(provider_context),
                          json.load(self.get_provider_context()),
                          msg='Provider context should be identical to what it '
