@@ -30,17 +30,18 @@ from cosmo_tester.test_suites.test_blueprints import nodecellar_test
 class DockerPersistenceTest(nodecellar_test.NodecellarAppTest):
 
     def test_docker_persistence_nodecellar(self):
-        provider_context = self.get_provider_context()
+        provider_context = json.load(self.get_provider_context())
         self.init_fabric()
         restarted = self.restart_container()
-        sleep(20)
         if not restarted:
             raise AssertionError('Failed restarting container. Test failed.')
+        # elasticsearch takes a few more seconds to start
+        sleep(20)
         print 'initial provider context is: {}'\
-              .format(json.load(provider_context))
+              .format(provider_context)
         print 'after reboot provider context is: {}' \
               .format(json.load(self.get_provider_context()))
-        self.assertEqual(json.load(provider_context),
+        self.assertEqual(provider_context,
                          json.load(self.get_provider_context()),
                          msg='Provider context should be identical to what it '
                              'was prior to reboot.')
