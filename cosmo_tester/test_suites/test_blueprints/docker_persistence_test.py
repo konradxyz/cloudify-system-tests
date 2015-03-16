@@ -33,6 +33,7 @@ class DockerPersistenceTest(nodecellar_test.NodecellarAppTest):
         provider_context = self.get_provider_context()
         self.init_fabric()
         restarted = self.restart_container()
+        sleep(20)
         if not restarted:
             raise AssertionError('Failed restarting container. Test failed.')
         print 'initial provider context is: {}'\
