@@ -14,6 +14,7 @@
 #    * limitations under the License.
 import urllib
 from time import sleep, time
+import json
 
 from fabric.api import env, reboot
 
@@ -90,24 +91,34 @@ class RebootManagerTest(TestCase):
                                      '{0}\n {1}'.format(pre.get('name'),
                                                         post.get('name')))
 
-    def _wait_for_management(self, ip, timeout, port=80):
+    def _wait_for_management(ip, timeout, port=80):
         """ Wait for url to become available
             :param ip: the manager IP
             :param timeout: in seconds
             :param port: port used by the rest service.
             :return: True of False
         """
-        validation_url = 'http://{0}:{1}/blueprints'.format(ip, port)
+        status_url = 'http://{0}:{1}/status'.format(ip, port)
 
         end = time() + timeout
 
         while end - time() >= 0:
-                try:
-                    status = urllib.urlopen(validation_url).getcode()
-                    if status == 200:
+            try:
+                response = urllib.urlopen(status_url)
+                if response.getcode() == 200:
+                    body = json.loads(response.readlines()[0])
+                    status = 'up'
+                    for service in body['services']:
+                        service_instance = service['instances'][0]
+                        instance_state = service_instance['state']
+                        if instance_state != 'up':
+                            status = 'down'
+                    if status == 'up':
                         return True
-                except IOError:
-                    sleep(5)
+            except IOError as e:
+                print 'error waiting for {0}. reason: {1}'\
+                      .format(status_url, e.message)
+            sleep(5)
 
         return False
 
