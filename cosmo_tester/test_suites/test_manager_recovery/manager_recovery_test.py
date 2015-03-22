@@ -96,8 +96,12 @@ class ManagerRecoveryTest(TestCase):
         def _kill_and_recover():
             self.cfy.use(management_ip=self.env.management_ip,
                          provider=False)
+            containers = ['riemann', 'frontend', 'amqpinflux', 'logstash',
+                          'influxdb', 'rabbitmq', 'elasticsearch',
+                          'mgmtworker', 'webui', 'restservice', 'fileserver']
+            containers_names = " ".join(str(x) for x in containers)
             with settings(**self.fabric_env):
-                sudo('docker kill cfy')
+                sudo('docker kill {0}'.format(containers_names))
             self.cfy.recover()
             self._fix_management_server_id()
 
