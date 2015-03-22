@@ -91,14 +91,14 @@ class RebootManagerTest(TestCase):
                                      '{0}\n {1}'.format(pre.get('name'),
                                                         post.get('name')))
 
-    def _wait_for_management(ip, timeout, port=80):
+    def _wait_for_management(ip, timeout):
         """ Wait for url to become available
             :param ip: the manager IP
             :param timeout: in seconds
             :param port: port used by the rest service.
             :return: True of False
         """
-        status_url = 'http://{0}:{1}/status'.format(ip, port)
+        status_url = 'http://{0}/status'.format(ip)
 
         end = time() + timeout
 
