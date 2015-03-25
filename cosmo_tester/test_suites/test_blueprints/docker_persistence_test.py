@@ -38,10 +38,11 @@ class DockerPersistenceTest(nodecellar_test.NodecellarAppTest):
         after_restart_provider_context = self.get_provider_context()
         self.assertEqual(origin_provider_context,
                          after_restart_provider_context,
-                         msg='Provider context should be identical to what it '
-                             'was prior to reboot. Context before restart: {0}. '
-                             'Context after restart: {1}'
-                         .format(origin_provider_context, after_restart_provider_context))
+                         msg='Provider context should be identical to '
+                             'what it was prior to reboot. Context before'
+                             ' restart: {0}. Context after restart: {1}'
+                         .format(origin_provider_context,
+                                 after_restart_provider_context))
 
         self._test_nodecellar_impl('openstack-blueprint.yaml')
 
