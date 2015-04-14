@@ -431,7 +431,6 @@ tests:
     external: *softlayer_plugin_external
     tests:
       - system_tests/manager
-      - system_tests/local
 
   openstack_security:
     tests:
