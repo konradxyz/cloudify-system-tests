@@ -430,7 +430,7 @@ tests:
   softlayer_blueprints:
     external: *softlayer_plugin_external
     tests:
-      - system_tests/manager
+      - system_tests/manager/test_install_uninstall.py:InstallTests.test_install_uninstall_linux
 
   openstack_security:
     tests:
