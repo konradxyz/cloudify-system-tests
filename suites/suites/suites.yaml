@@ -103,7 +103,7 @@ templates:
     <<: *openstack_manager_blueprint_sg_override
 
   - &softlayer_manager_blueprint_override
-    <<: *manager_blueprint_commercial_override
+    <<: *manager_blueprint_override
     node_templates.manager.properties.cloudify.workflows.task_retries: 100
 
   ######################################################
