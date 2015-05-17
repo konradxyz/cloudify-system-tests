@@ -608,7 +608,7 @@ test_suites:
       - manager_status
 
   hp_openstack_manager_recovery:
-    handler_configuration: hp_openstack_system_tests_region_a
+    handler_configuration: hp_openstack_system_tests3_region_a
     tests:
       - manager_recovery
 
