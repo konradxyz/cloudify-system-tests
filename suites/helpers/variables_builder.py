@@ -24,6 +24,8 @@ def main():
 
     top_level_configuration_id = '1'
     configuration_ids = [configuration_id]
+    print 'build id: {0}'.format(build_id)
+    print 'conf id: {0}'.format(configuration_id)
     while configuration_id != top_level_configuration_id:
         configuration_id = _get_parent_configuration_id(
             configuration_id, qb_url, auth)
